@@ -10,8 +10,8 @@ USER root
 # Update and install necessary packages
 RUN apt update && apt install -y software-properties-common \
     && apt update
-RUN apt install zip unzip
-RUN apt install python3
+RUN apt install -y zip unzip
+RUN apt install -y python3
 
 # Update packages and install vim
 RUN apt update && apt install -y vim
