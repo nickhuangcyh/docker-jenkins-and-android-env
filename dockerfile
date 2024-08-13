@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts-jdk11
+FROM jenkins/jenkins:lts-jdk17
 
 LABEL maintainer="NickHuang <nickhuang@climax.com.tw>"
 
@@ -7,9 +7,23 @@ ENV ANDROID_HOME=/opt/android-sdk-linux
 
 USER root
 
-RUN apt update
+# Update and install necessary packages
+RUN apt update && apt install -y software-properties-common \
+    && apt update
 RUN apt install zip unzip
 RUN apt install python3
+
+# Update packages and install vim
+RUN apt update && apt install -y vim
+
+# Install jdk-11 & jdk-17
+RUN echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list \
+    && echo "deb http://security.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list.d/bullseye.list \
+    && echo "deb http://deb.debian.org/debian bullseye-updates main" >> /etc/apt/sources.list.d/bullseye.list \
+    && apt update \
+    && apt install -y openjdk-11-jdk openjdk-17-jdk \
+    && rm /etc/apt/sources.list.d/bullseye.list \
+    && apt update
 
 # Create android sdk directory and change user:group permission
 RUN mkdir -p ${ANDROID_HOME}
