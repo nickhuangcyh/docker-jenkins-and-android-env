@@ -28,6 +28,14 @@ You can pull the pre-built Docker image from the GitHub Container Registry:
 docker pull ghcr.io/nickhuangcyh/docker-jenkins-and-android-env:v1.0.0-jdk17
 ```
 
+### Run the Docker Container
+
+After pulling the image, you can run the Docker container with the following command:
+
+```sh
+docker run -d -v ${volume path}:/var/jenkins_home -p 8080:8080 -p 50000:50000 ghcr.io/nickhuangcyh/docker-jenkins-and-android-env:v1.0.0-jdk17
+```
+
 ### Build from Source
 
 Alternatively, you can clone the repository and build the Docker image yourself:
