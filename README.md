@@ -2,7 +2,7 @@
 
 ## Version
 
-v1.0.0-jdk17
+v1.1.0-jdk17
 
 ## Description
 
@@ -25,7 +25,7 @@ This project sets up a Docker environment for Jenkins and Android development. I
 You can pull the pre-built Docker image from the GitHub Container Registry:
 
 ```sh
-docker pull ghcr.io/nickhuangcyh/docker-jenkins-and-android-env:v1.0.0-jdk17
+docker pull ghcr.io/nickhuangcyh/docker-jenkins-and-android-env:v1.1.0-jdk17
 ```
 
 ### Run the Docker Container
@@ -33,7 +33,7 @@ docker pull ghcr.io/nickhuangcyh/docker-jenkins-and-android-env:v1.0.0-jdk17
 After pulling the image, you can run the Docker container with the following command:
 
 ```sh
-docker run -d -v ${volume path}:/var/jenkins_home -p 8080:8080 -p 50000:50000 ghcr.io/nickhuangcyh/docker-jenkins-and-android-env:v1.0.0-jdk17
+docker run -d -v ${volume path}:/var/jenkins_home -p 8080:8080 -p 50000:50000 ghcr.io/nickhuangcyh/docker-jenkins-and-android-env:v1.1.0-jdk17
 ```
 
 ### Build from Source
@@ -51,14 +51,14 @@ cd docker-jenkins-and-android-env
     
 
 ```sh
-docker build -t docker-jenkins-and-android-env:v1.0.0-jdk17 .
+docker build -t docker-jenkins-and-android-env:v1.1.0-jdk17 .
 ```
 
 3. Run the Docker container:
     
 
 ```sh
-docker run -d -v ${volume path}:/var/jenkins_home -p 8080:8080 -p 50000:50000 docker-jenkins-and-android-env:v1.0.0-jdk17
+docker run -d -v ${volume path}:/var/jenkins_home -p 8080:8080 -p 50000:50000 docker-jenkins-and-android-env:v1.1.0-jdk17
 ```
 
 ## Usage

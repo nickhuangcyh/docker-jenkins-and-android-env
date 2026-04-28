@@ -8,31 +8,36 @@ ENV ANDROID_HOME=/opt/android-sdk-linux
 USER root
 
 # Update and install necessary packages
-RUN apt update && apt install -y software-properties-common \
-    && apt update
-RUN apt install -y zip unzip
-RUN apt install -y python3
+RUN apt update && apt install -y zip unzip python3 vim
 
-# Update packages and install vim
-RUN apt update && apt install -y vim
+# Install jdk-21
+RUN apt install -y openjdk-21-jdk
 
-# Install jdk-11 & jdk-17
-RUN echo "deb http://deb.debian.org/debian bullseye main" > /etc/apt/sources.list.d/bullseye.list \
-    && echo "deb http://security.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list.d/bullseye.list \
-    && echo "deb http://deb.debian.org/debian bullseye-updates main" >> /etc/apt/sources.list.d/bullseye.list \
-    && apt update \
-    && apt install -y openjdk-11-jdk openjdk-17-jdk \
-    && rm /etc/apt/sources.list.d/bullseye.list \
-    && apt update
+# Install jdk-17 (Adoptium Temurin)
+RUN mkdir -p /usr/lib/jvm/java-17-openjdk-amd64 \
+    && curl -fsSL https://api.adoptium.net/v3/binary/latest/17/ga/linux/x64/jdk/hotspot/normal/eclipse -o /tmp/temurin-17.tar.gz \
+    && tar -xzf /tmp/temurin-17.tar.gz -C /usr/lib/jvm/java-17-openjdk-amd64 --strip-components=1 \
+    && rm /tmp/temurin-17.tar.gz
+
+# Install jdk-11 (Adoptium Temurin)
+RUN mkdir -p /usr/lib/jvm/java-11-openjdk-amd64 \
+    && curl -fsSL https://api.adoptium.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/eclipse -o /tmp/temurin-11.tar.gz \
+    && tar -xzf /tmp/temurin-11.tar.gz -C /usr/lib/jvm/java-11-openjdk-amd64 --strip-components=1 \
+    && rm /tmp/temurin-11.tar.gz
 
 # Create android sdk directory and change user:group permission
 RUN mkdir -p ${ANDROID_HOME}
 RUN chown -R jenkins:jenkins ${ANDROID_HOME}
 
 # Download gdrive binary file into /usr/local/bin and change own/mod
-RUN curl https://raw.githubusercontent.com/nickhuangcyh/gdrive-binaries/main/linux/gdrive-linux-x64 --output /usr/local/bin/gdrive
-RUN chown jenkins:jenkins /usr/local/bin/gdrive
-RUN chmod a+x /usr/local/bin/gdrive
+# RUN curl https://raw.githubusercontent.com/nickhuangcyh/gdrive-binaries/main/linux/gdrive-linux-x64 --output /usr/local/bin/gdrive
+# RUN chown jenkins:jenkins /usr/local/bin/gdrive
+# RUN chmod a+x /usr/local/bin/gdrive
+
+# Install rclone
+RUN curl -fsSL -o /tmp/rclone.deb https://downloads.rclone.org/rclone-current-linux-amd64.deb \
+    && dpkg -i /tmp/rclone.deb \
+    && rm /tmp/rclone.deb
 
 USER jenkins
 
