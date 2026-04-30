@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts-jdk17
+FROM jenkins/jenkins:lts-jdk21
 
 LABEL maintainer="NickHuang <nickhuang@climax.com.tw>"
 
@@ -10,8 +10,11 @@ USER root
 # Update and install necessary packages
 RUN apt update && apt install -y zip unzip python3 vim
 
-# Install jdk-21
-RUN apt install -y openjdk-21-jdk
+# Install jdk-21 (Adoptium Temurin)
+RUN mkdir -p /usr/lib/jvm/java-21-openjdk-amd64 \
+    && curl -fsSL https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jdk/hotspot/normal/eclipse -o /tmp/temurin-21.tar.gz \
+    && tar -xzf /tmp/temurin-21.tar.gz -C /usr/lib/jvm/java-21-openjdk-amd64 --strip-components=1 \
+    && rm /tmp/temurin-21.tar.gz
 
 # Install jdk-17 (Adoptium Temurin)
 RUN mkdir -p /usr/lib/jvm/java-17-openjdk-amd64 \
