@@ -42,6 +42,18 @@ RUN curl -fsSL -o /tmp/rclone.deb https://downloads.rclone.org/rclone-current-li
     && dpkg -i /tmp/rclone.deb \
     && rm /tmp/rclone.deb
 
+# Install Docker CLI and add jenkins to docker group (GID 999)
+RUN apt-get update \
+    && apt-get install -y ca-certificates curl gnupg \
+    && install -m 0755 -d /etc/apt/keyrings \
+    && curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc \
+    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo $VERSION_CODENAME) stable" > /etc/apt/sources.list.d/docker.list \
+    && apt-get update \
+    && apt-get install -y docker-ce-cli \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -g 999 docker \
+    && usermod -aG docker jenkins
+
 USER jenkins
 
 # Download sdkmanager
